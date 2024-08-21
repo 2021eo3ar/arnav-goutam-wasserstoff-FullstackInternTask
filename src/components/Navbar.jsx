@@ -13,16 +13,16 @@ const Navbar = () => {
     <div className="flex justify-evenly items-center p-4 ">
       {/* Location Icon */}
       <div className="flex items-center text-white">
-        <FaLocationArrow size={20} className="mr-2" />
-        <span className="font-semibold text-lg">Current Location</span>
+        <FaLocationArrow size={20} className="ml-1" />
+        {/* <span className="font-semibold text-md">Current Location</span> */}
       </div>
 
       {/* Search Bar */}
-      <div className="flex items-center w-1/2">
+      <div className="flex items-center mr-2 w-1/2 md:w-3/4">
         <BiSearch size={15} className="text-gray-400 absolute ml-3" />
         <input
           type="text"
-          placeholder="Search for cities"
+          placeholder="Find for cities"
           className="w-full pl-10 py-2 rounded-full bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
       </div>

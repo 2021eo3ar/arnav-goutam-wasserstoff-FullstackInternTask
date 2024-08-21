@@ -31,8 +31,8 @@ const HomePage = () => {
       </div>
 
       {/* Right Sidebar */}
-      <section className="w-full md:w-1/4 lg:w-1/3 xl:w-1/4 mt-6 md:mt-0 md:absolute md:right-48 md:top-32">
-        <div className="bg-gray-800 rounded-lg p-1 md:p-6 h-full md:h-full w-11/12 md:w-full mx-auto">
+      <section className="w-full md:w-1/4 lg:w-1/3 xl:w-1/4 mt-6 md:mt-0 md:absolute md:right-48 md:top-32 ">
+        <div className="bg-gray-800 p-1 md:p-6 h-full md:h-full w-11/12 md:w-full mx-auto border-blue-500 border-2 rounded-md">
           <FiveDayForecast />
         </div>
       </section>

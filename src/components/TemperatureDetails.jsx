@@ -50,7 +50,7 @@ const TempratureDetails = () => {
           <h1 className="text-lg font-semibold mb-4 text-center md:text-left">Today's Forecast</h1>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-4">
             {todayForecast.map((forecast) => (
-              <div key={forecast.dt_txt} className="flex flex-col items-center p-4 bg-gray-800 rounded-lg">
+              <div key={forecast.dt_txt} className="flex flex-col items-center border-blue-500 border-2  p-4 bg-gray-800 rounded-lg">
                 <p className="font-semibold text-sm md:text-base mb-2">
                   {new Date(forecast.dt_txt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                 </p>
