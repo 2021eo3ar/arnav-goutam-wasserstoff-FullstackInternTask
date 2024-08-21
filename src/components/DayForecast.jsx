@@ -50,10 +50,10 @@ const DayForecast = () => {
         <>
           <div className="text-center md:text-left mb-6 md:mb-0 md:w-1/2">
             <h1 className="font-bold text-3xl md:text-5xl mb-2">{currentLocationWeather.name}</h1>
-            <p className="text-sm md:text-lg mb-2 capitalize">{currentLocationWeather.weather[0].description}</p>
+            <p className="text-sm md:text-sm mb-2 capitalize">{currentLocationWeather.weather[0].description}</p>
             <p className="font-semibold text-2xl md:text-4xl">{currentLocationWeather.main.temp}°C</p>
           </div>
-          <div className="flex justify-center md:justify-end md:w-1/2">
+          <div className="flex justify-center  md:justify-end md:w-1/2">
             {weatherIcons[weatherCondition] || <WiDaySunny className="w-24 h-24 md:w-32 md:h-32 lg:w-40 lg:h-40" />}
           </div>
         </>

@@ -50,28 +50,28 @@ const CurrentDateInsight = () => {
     <div className="p-4">
       <h3 className="text-lg text-white font-semibold mb-4">Today's Insights</h3>
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <div className="bg-gray-800 text-white shadow-md rounded-lg p-4 flex items-center space-x-4">
+        <div className="bg-gray-800 text-white shadow-md justify-evenly rounded-lg p-4 flex items-center space-x-4">
            <FaThermometerHalf className="text-3xl" />
           <div>
             <h3 className="text-sm text-center font-semibold">Max Temperature</h3>
             <p className="text-xl text-center">{maxTemp}°C</p>
           </div>
         </div>
-        <div className="bg-gray-800 text-white shadow-md rounded-lg p-4 flex items-center space-x-4">
+        <div className="bg-gray-800 text-white shadow-md justify-evenly rounded-lg p-4 flex items-center space-x-4">
           <FaThermometerHalf className="text-3xl" />
           <div>
             <h3 className="text-sm text-center font-semibold">Min Temperature</h3>
             <p className="text-xl text-center">{minTemp}°C</p>
           </div>
         </div>
-        <div className="bg-gray-800 text-white shadow-md rounded-lg p-4 flex items-center space-x-4">
+        <div className="bg-gray-800 text-white shadow-md justify-evenly rounded-lg p-4 flex items-center space-x-4">
           <FaTachometerAlt className="text-3xl" />
           <div>
             <h3 className="text-lg font-semibold">Humidity</h3>
             <p className="text-xl">{humidity}%</p>
           </div>
         </div>
-        <div className="bg-gray-800 text-white shadow-md rounded-lg p-4 flex items-center space-x-4">
+        <div className="bg-gray-800 text-white shadow-md justify-evenly rounded-lg p-4 flex items-center space-x-4">
           <FaWind className="text-3xl" />
           <div>
             <h3 className="text-lg font-semibold">Wind Speed</h3>

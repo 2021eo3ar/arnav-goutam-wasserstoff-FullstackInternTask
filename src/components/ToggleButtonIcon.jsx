@@ -20,18 +20,18 @@ const ToggleButtonIcon = () => {
         activeLabel={'°C'}
         colors={{
           activeThumb: {
-            base: 'rgb(250,250,250)',
+            base: 'rgb(255, 255, 255)', 
           },
           inactiveThumb: {
-            base: 'rgb(62,130,247)',
+            base: 'rgb(255, 215, 0)', 
           },
           active: {
-            base: 'rgb(207,221,245)',
-            hover: 'rgb(177, 191, 215)',
+            base: 'rgb(0, 123, 255)', 
+            hover: 'rgb(0, 105, 217)', 
           },
           inactive: {
-            base: 'rgb(65,66,68)',
-            hover: 'rgb(95,96,98)',
+            base: 'rgb(128, 128, 128)', 
+            hover: 'rgb(105, 105, 105)', 
           },
         }}
       />

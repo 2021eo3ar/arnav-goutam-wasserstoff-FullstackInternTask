@@ -51,12 +51,14 @@ const TempratureDetails = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-4">
             {todayForecast.map((forecast) => (
               <div key={forecast.dt_txt} className="flex flex-col items-center p-4 bg-gray-800 rounded-lg">
-                <p className="font-semibold text-sm md:text-base">
+                <p className="font-semibold text-sm md:text-base mb-2">
                   {new Date(forecast.dt_txt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                 </p>
-                {weatherIcons[forecast.weather[0].main] || <WiDaySunny size={30} />}
+                <div className="mb-2">
+                  {weatherIcons[forecast.weather[0].main] || <WiDaySunny size={40} />}
+                </div>
+                <p className="text-sm md:text-sm capitalize mb-2 text-center">{forecast.weather[0].description}</p>
                 <p className="text-lg md:text-xl">{Math.round(forecast.main.temp)}°C</p>
-                <p className="text-xs md:text-sm capitalize">{forecast.weather[0].description}</p>
               </div>
             ))}
           </div>
