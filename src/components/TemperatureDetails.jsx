@@ -12,7 +12,7 @@ const weatherIcons = {
 
 const TempratureDetails = () => {
   const dispatch = useDispatch();
-  const { fiveDayForecast, loading, error } = useSelector((state) => state.weather);
+  const { fiveDayForecast, loading, error, unit } = useSelector((state) => state.weather);
 
   useEffect(() => {
     if (navigator.geolocation) {
@@ -28,7 +28,7 @@ const TempratureDetails = () => {
     } else {
       console.error('Geolocation is not supported by this browser.');
     }
-  }, [dispatch]);
+  }, [dispatch, unit]); // Refetch data when unit changes
 
   if (loading) {
     return <div>Loading...</div>;
@@ -50,7 +50,7 @@ const TempratureDetails = () => {
           <h1 className="text-lg font-semibold mb-4 text-center md:text-left">Today's Forecast</h1>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-4">
             {todayForecast.map((forecast) => (
-              <div key={forecast.dt_txt} className="flex flex-col items-center border-blue-500 border-2  p-4 bg-gray-800 rounded-lg">
+              <div key={forecast.dt_txt} className="flex flex-col items-center border-blue-500 border-2 p-4 bg-gray-800 rounded-lg">
                 <p className="font-semibold text-sm md:text-base mb-2">
                   {new Date(forecast.dt_txt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                 </p>
@@ -58,7 +58,9 @@ const TempratureDetails = () => {
                   {weatherIcons[forecast.weather[0].main] || <WiDaySunny size={40} />}
                 </div>
                 <p className="text-sm md:text-sm capitalize mb-2 text-center">{forecast.weather[0].description}</p>
-                <p className="text-lg md:text-xl">{Math.round(forecast.main.temp)}°C</p>
+                <p className="text-lg md:text-xl">
+                  {Math.round(forecast.main.temp)}°{unit === 'metric' ? 'C' : 'F'}
+                </p>
               </div>
             ))}
           </div>

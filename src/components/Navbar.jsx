@@ -2,6 +2,7 @@ import React from 'react';
 import { FaLocationArrow } from 'react-icons/fa'; 
 import { BiSearch } from 'react-icons/bi'; 
 import ToggleButtonIcon from './ToggleButtonIcon'; 
+import { Link } from 'react-router-dom';
 
 // Access the environment variable
 const API_URL = import.meta.env.VITE_WEATHER_API_URL;
@@ -13,12 +14,12 @@ const Navbar = () => {
     <div className="flex justify-evenly items-center p-4 ">
       {/* Location Icon */}
       <div className="flex items-center text-white">
-        <FaLocationArrow size={20} className="ml-1" />
+       <Link to="/"> <FaLocationArrow size={20} className="ml-1" /></Link>
         {/* <span className="font-semibold text-md">Current Location</span> */}
       </div>
 
       {/* Search Bar */}
-      <div className="flex items-center mr-2 w-1/2 md:w-3/4">
+      <div className="flex items-center mr-2 w-1/2 md:w-1/2">
         <BiSearch size={15} className="text-gray-400 absolute ml-3" />
         <input
           type="text"

@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchFiveDayForecast } from '../redux/weatherSlice';
 import { FaCloudSun, FaCloudRain, FaSnowflake, FaCloudShowersHeavy, FaSun } from 'react-icons/fa';
 
+// Function to get the correct weather icon based on the weather code
 const getWeatherIcon = (weatherCode) => {
   switch (weatherCode) {
     case '01d':
@@ -30,7 +31,7 @@ const getWeatherIcon = (weatherCode) => {
 
 const FiveDayForecast = () => {
   const dispatch = useDispatch();
-  const { fiveDayForecast, loading, error } = useSelector((state) => state.weather);
+  const { fiveDayForecast, loading, error, unit } = useSelector((state) => state.weather);
 
   useEffect(() => {
     const fetchWeather = async (lat, lon) => {
@@ -66,6 +67,9 @@ const FiveDayForecast = () => {
 
   const dailyForecasts = fiveDayForecast.list.filter((item) => item.dt_txt.includes('12:00:00'));
 
+  // Function to convert temperature from Celsius to Fahrenheit
+  const convertToFahrenheit = (tempCelsius) => (tempCelsius * 9/5) + 32;
+
   return (
     <div className="bg-gray-800 text-white p-4 rounded-lg">
       <h1 className="text-xl font-bold mb-4">5-Day Forecast</h1>
@@ -77,18 +81,23 @@ const FiveDayForecast = () => {
             day: 'numeric',
             month: 'short',
           });
-          const avgTemp = ((main.temp_max + main.temp_min) / 2).toFixed(1);
+
+          // Calculate average temperature and convert if needed
+          const avgTemp = unit === 'metric'
+            ? ((main.temp_max + main.temp_min) / 2).toFixed(1)
+            : ((convertToFahrenheit(main.temp_max) + convertToFahrenheit(main.temp_min)) / 2).toFixed(1);
+            
           const weatherDescription = weather[0].description;
           const weatherIcon = getWeatherIcon(weather[0].icon);
 
           return (
-            <div key={dt_txt} className="flex justify-between items-center p-4  border-b-2 border-gray-400 ">
+            <div key={dt_txt} className="flex justify-between items-center p-4 border-b-2 border-gray-400">
               <div className="flex items-center space-x-2">
                 {weatherIcon}
                 <span className="font-medium">{date}</span>
               </div>
               <div className="flex flex-col items-end">
-                <span>{avgTemp}°</span>
+                <span>{avgTemp}°{unit === 'metric' ? 'C' : 'F'}</span>
                 <span className="text-gray-400 text-sm capitalize">{weatherDescription}</span>
               </div>
             </div>

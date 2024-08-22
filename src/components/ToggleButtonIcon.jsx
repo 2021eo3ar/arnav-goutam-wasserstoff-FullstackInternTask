@@ -1,23 +1,24 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import ToggleButton from 'react-toggle-button';
+import { toggleUnit } from '../redux/weatherSlice';
 
 const ToggleButtonIcon = () => {
-  // State to track the temperature unit
-  const [isCelsius, setIsCelsius] = useState(true);
+  const dispatch = useDispatch();
+  const unit = useSelector((state) => state.weather.unit);
+  const isCelsius = unit === 'metric';
 
-  // Function to toggle the temperature unit
-  const toggleUnit = (value) => {
-    setIsCelsius(!value);
+  const handleToggle = () => {
+    dispatch(toggleUnit());
   };
 
   return (
     <div className="flex items-center">
-      {/* Toggle Button */}
       <ToggleButton
         value={isCelsius}
-        onToggle={toggleUnit}
-        inactiveLabel={'°F'}
-        activeLabel={'°C'}
+        onToggle={handleToggle}
+        inactiveLabel={'°C'}
+        activeLabel={'°F'}
         colors={{
           activeThumb: {
             base: 'rgb(255, 255, 255)', 

@@ -1,18 +1,19 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from 'axios';
 
-// Access the environment variable
+// Access the environment variables
 const API_URL = import.meta.env.VITE_WEATHER_API_URL;
-const API_KEY = import.meta.env.VITE_API_KEY; 
-console.log("the api key are", API_KEY, API_URL)
+const API_KEY = import.meta.env.VITE_API_KEY;
 
 // Async thunk to fetch weather data based on user's current location
 export const fetchCurrentLocationWeather = createAsyncThunk(
   'weather/fetchCurrentLocationWeather',
   async ({ lat, lon }, thunkAPI) => {
+    const state = thunkAPI.getState().weather;
+    const unit = state.unit;
     try {
       const response = await axios.get(
-        `${API_URL}/weather?lat=${lat}&lon=${lon}&units=metric&appid=${API_KEY}`
+        `${API_URL}/weather?lat=${lat}&lon=${lon}&units=${unit}&appid=${API_KEY}`
       );
       return response.data;
     } catch (error) {
@@ -25,9 +26,11 @@ export const fetchCurrentLocationWeather = createAsyncThunk(
 export const fetchCityWeather = createAsyncThunk(
   'weather/fetchCityWeather',
   async (cityName, thunkAPI) => {
+    const state = thunkAPI.getState().weather;
+    const unit = state.unit;
     try {
       const response = await axios.get(
-        `${API_URL}/weather?q=${cityName}&units=metric&appid=${API_KEY}`
+        `${API_URL}/weather?q=${cityName}&units=${unit}&appid=${API_KEY}`
       );
       return response.data;
     } catch (error) {
@@ -40,13 +43,13 @@ export const fetchCityWeather = createAsyncThunk(
 export const fetchFiveDayForecast = createAsyncThunk(
   'weather/fetchFiveDayForecast',
   async ({ lat, lon }, thunkAPI) => {
+    const state = thunkAPI.getState().weather;
+    const unit = state.unit;
     try {
       const response = await axios.get(
-        `${API_URL}/forecast?lat=${lat}&lon=${lon}&units=metric&appid=${API_KEY}`
+        `${API_URL}/forecast?lat=${lat}&lon=${lon}&units=${unit}&appid=${API_KEY}`
       );
-      console.log(response.data)
       return response.data;
-
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response.data);
     }
@@ -58,6 +61,7 @@ const initialState = {
   currentLocationWeather: null,
   cityWeather: null,
   fiveDayForecast: null,
+  unit: 'metric', // 'metric' for Celsius, 'imperial' for Fahrenheit
   loading: false,
   error: null,
 };
@@ -66,7 +70,12 @@ const initialState = {
 const weatherSlice = createSlice({
   name: 'weather',
   initialState,
-  reducers: {},
+  reducers: {
+    // Reducer to toggle temperature unit
+    toggleUnit: (state) => {
+      state.unit = state.unit === 'metric' ? 'imperial' : 'metric';
+    },
+  },
   extraReducers: (builder) => {
     builder
       // Fetch current location weather
@@ -110,5 +119,7 @@ const weatherSlice = createSlice({
       });
   },
 });
+
+export const { toggleUnit } = weatherSlice.actions;
 
 export default weatherSlice.reducer;
