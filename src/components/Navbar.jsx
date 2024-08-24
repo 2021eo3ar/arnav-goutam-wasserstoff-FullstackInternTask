@@ -1,39 +1,56 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { FaLocationArrow } from 'react-icons/fa'; 
 import { BiSearch } from 'react-icons/bi'; 
 import ToggleButtonIcon from './ToggleButtonIcon'; 
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
-// Access the environment variable
-const API_URL = import.meta.env.VITE_WEATHER_API_URL;
-const API_KEY = import.meta.env.VITE_API_KEY; 
-console.log("the api key are", API_KEY, API_URL)
+const Navbar = ({ onCitySearch }) => {
+  const location = useLocation();
+  const [inputValue, setInputValue] = useState('');
 
-const Navbar = () => {
+  const handleSearchChange = (e) => {
+    setInputValue(e.target.value);
+  };
+
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+    onCitySearch(inputValue); // Pass the search input to the parent
+  };
+
   return (
-    <div className="flex justify-evenly items-center p-4 ">
-      {/* Location Icon */}
+    <div className="flex justify-evenly items-center p-4">
       <div className="flex items-center text-white">
-       <Link to="/"> <FaLocationArrow size={20} className="ml-1" /></Link>
-        {/* <span className="font-semibold text-md">Current Location</span> */}
+        <Link to="/">
+          <FaLocationArrow size={20} className="ml-1" />
+        </Link>
       </div>
 
-      {/* Search Bar */}
-      <div className="flex items-center mr-2 w-1/2 md:w-1/2">
-        <BiSearch size={15} className="text-gray-400 absolute ml-3" />
-        <input
-          type="text"
-          placeholder="Find for cities"
-          className="w-full pl-10 py-2 rounded-full bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
-      </div>
+      {location.pathname === '/search_cities' ? (
+        <form onSubmit={handleSearchSubmit} className="flex items-center mr-2 w-1/2 md:w-1/2">
+          <BiSearch size={15} className="text-gray-400 absolute ml-3" />
+          <input
+            type="text"
+            placeholder="Find cities"
+            className="w-full pl-10 py-2 rounded-full bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+            value={inputValue}
+            onChange={handleSearchChange}
+          />
+        </form>
+      ) : (
+        <div className="flex items-center">
+          <Link to="/search_cities">
+            <button className="bg-blue-500 text-white px-4 py-2 rounded-full hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
+              Search for a City
+            </button>
+          </Link>
+        </div>
+      )}
 
-      {/* Toggle Button */}
       <div className="flex items-center">
         <ToggleButtonIcon />
       </div>
     </div>
   );
-}
+};
 
 export default Navbar;

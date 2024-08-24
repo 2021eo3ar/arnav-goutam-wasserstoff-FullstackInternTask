@@ -7,35 +7,25 @@ import FiveDayForecast from "../components/FiveDayForecast";
 
 const HomePage = () => {
   return (
-    <div className="flex flex-col md:flex-row bg-gray-900 min-h-screen relative">
+    <div className="flex flex-col md:flex-row bg-gray-900 min-h-screen">
       {/* Main Content Section */}
-      <div className="flex-grow">
-        <header className="shadow-md">
+      <main className="flex-grow p-4 md:p-6 lg:p-8">
+        <header className="mb-4">
+          {/* Pass the handleCitySearch function to Navbar */}
           <Navbar />
         </header>
 
-        {/* Main Content */}
-        <main className="flex flex-col  items-center md:items-start justify-start md:ml-44 ">
-          <section className="w-full max-w-7xl pb-0 px-4  md:w-3/4 lg:w-2/3 xl:w-1/2">
-            <DayForecast />
-          </section>
-
-          <section className="w-full max-w-7xl px-4 pb-0  md:w-3/4 lg:w-2/3 xl:w-1/2">
-            <TemperatureDetails />
-          </section>
-
-          <section className="w-full max-w-7xl px-4 md:w-3/4 lg:w-2/3 xl:w-1/2">
-            <CurrentDateInsight />
-          </section>
-        </main>
-      </div>
-
-      {/* Right Sidebar */}
-      <section className="w-full md:w-1/4 lg:w-1/3 xl:w-1/4 mt-6 mb-4 md:mt-0 md:absolute md:right-48 md:top-32 ">
-        <div className="bg-gray-800 p-1 md:p-6 h-full md:h-full w-11/12 md:w-full mx-auto border-blue-500 border-2 rounded-md">
-          <FiveDayForecast />
-        </div>
-      </section>
+        <section className="space-y-4">
+          {/* Pass the cityName to DayForecast */}
+          <DayForecast />
+          <TemperatureDetails />
+          <CurrentDateInsight />
+        </section>
+      </main>
+      {/* Sidebar or additional section */}
+      <aside className="md:w-1/4 lg:w-1/5 bg-gray-800 p-4 border-r border-gray-700 flex justify-center items-center">
+        <FiveDayForecast />
+      </aside>
     </div>
   );
 };

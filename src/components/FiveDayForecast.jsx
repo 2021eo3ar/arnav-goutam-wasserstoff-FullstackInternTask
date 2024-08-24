@@ -1,21 +1,20 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchFiveDayForecast } from '../redux/weatherSlice';
-import { FaCloudSun, FaCloudRain, FaSnowflake, FaCloudShowersHeavy, FaSun } from 'react-icons/fa';
+import { useLocation } from 'react-router-dom';
+import { fetchFiveDayForecast, fetchCityForecast } from '../redux/weatherSlice';
+import { FaCloudSun, FaCloudRain, FaSnowflake, FaCloudShowersHeavy } from 'react-icons/fa';
 
 // Function to get the correct weather icon based on the weather code
 const getWeatherIcon = (weatherCode) => {
   switch (weatherCode) {
     case '01d':
-      return <FaSun className="text-yellow-500 text-2xl" />;
+      return <FaCloudSun className="text-yellow-500 text-2xl" />;
     case '02d':
       return <FaCloudSun className="text-yellow-500 text-2xl" />;
     case '03d':
-      return <FaCloudSun className="text-white text-2xl" />;
     case '04d':
       return <FaCloudSun className="text-white text-2xl" />;
     case '09d':
-      return <FaCloudShowersHeavy className="text-blue-500 text-2xl" />;
     case '10d':
       return <FaCloudShowersHeavy className="text-blue-500 text-2xl" />;
     case '11d':
@@ -31,21 +30,16 @@ const getWeatherIcon = (weatherCode) => {
 
 const FiveDayForecast = () => {
   const dispatch = useDispatch();
-  const { fiveDayForecast, loading, error, unit } = useSelector((state) => state.weather);
+  const location = useLocation();
+  const { cityFiveDayForecast, coordinateFiveDayForecast, loading, error, unit } = useSelector((state) => state.weather);
 
   useEffect(() => {
-    const fetchWeather = async (lat, lon) => {
-      if (lat && lon) {
-        await dispatch(fetchFiveDayForecast({ lat, lon }));
-      }
-    };
-
-    const handleGeolocation = () => {
+    if (location.pathname === '/') {
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
           (position) => {
             const { latitude, longitude } = position.coords;
-            fetchWeather(latitude, longitude);
+            dispatch(fetchFiveDayForecast({ lat: latitude, lon: longitude }));
           },
           (error) => {
             console.error('Geolocation error:', error.message);
@@ -55,23 +49,30 @@ const FiveDayForecast = () => {
       } else {
         console.error('Geolocation is not supported by this browser.');
       }
-    };
+    } else if (location.pathname === '/search_cities') {
+      const queryParams = new URLSearchParams(location.search);
+      const searchCity = queryParams.get('city');
+      if (searchCity) {
+        dispatch(fetchCityForecast(searchCity));
+      }
+    }
+  }, [dispatch, location.pathname, location.search, unit]);
 
-    handleGeolocation();
-  }, [dispatch]);
+  if (loading) return <div className="text-center text-white">Loading...</div>;
+  if (error) return <div className="text-center text-white">Error: {error.message}</div>;
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error.message}</div>;
+  const forecastData = location.pathname === '/search_cities' ? cityFiveDayForecast : coordinateFiveDayForecast;
 
-  if (!fiveDayForecast) return <div>No data available</div>;
+  if (!forecastData) return <div className="text-center text-white">No data available</div>;
 
-  const dailyForecasts = fiveDayForecast.list.filter((item) => item.dt_txt.includes('12:00:00'));
+  // Filter forecasts for daily intervals at 12:00:00
+  const dailyForecasts = forecastData.list.filter((item) => item.dt_txt.includes('12:00:00'));
 
   // Function to convert temperature from Celsius to Fahrenheit
   const convertToFahrenheit = (tempCelsius) => (tempCelsius * 9/5) + 32;
 
   return (
-    <div className="bg-gray-800 text-white p-4 rounded-lg">
+    <div className="bg-gray-800 text-white p-4 rounded-lg border-2 border-blue-500">
       <h1 className="text-xl font-bold mb-4">5-Day Forecast</h1>
       <div className="space-y-4">
         {dailyForecasts.map((forecast) => {
@@ -86,7 +87,7 @@ const FiveDayForecast = () => {
           const avgTemp = unit === 'metric'
             ? ((main.temp_max + main.temp_min) / 2).toFixed(1)
             : ((convertToFahrenheit(main.temp_max) + convertToFahrenheit(main.temp_min)) / 2).toFixed(1);
-            
+
           const weatherDescription = weather[0].description;
           const weatherIcon = getWeatherIcon(weather[0].icon);
 

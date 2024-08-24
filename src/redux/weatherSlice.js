@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from 'axios';
+import axios from "axios";
 
 // Access the environment variables
 const API_URL = import.meta.env.VITE_WEATHER_API_URL;
@@ -7,7 +7,7 @@ const API_KEY = import.meta.env.VITE_API_KEY;
 
 // Async thunk to fetch weather data based on user's current location
 export const fetchCurrentLocationWeather = createAsyncThunk(
-  'weather/fetchCurrentLocationWeather',
+  "weather/fetchCurrentLocationWeather",
   async ({ lat, lon }, thunkAPI) => {
     const state = thunkAPI.getState().weather;
     const unit = state.unit;
@@ -17,14 +17,14 @@ export const fetchCurrentLocationWeather = createAsyncThunk(
       );
       return response.data;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data);
+      return thunkAPI.rejectWithValue(error.response?.data || error.message);
     }
   }
 );
 
 // Async thunk to fetch weather data based on user search (city name)
 export const fetchCityWeather = createAsyncThunk(
-  'weather/fetchCityWeather',
+  "weather/fetchCityWeather",
   async (cityName, thunkAPI) => {
     const state = thunkAPI.getState().weather;
     const unit = state.unit;
@@ -34,14 +34,14 @@ export const fetchCityWeather = createAsyncThunk(
       );
       return response.data;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data);
+      return thunkAPI.rejectWithValue(error.response?.data || error.message);
     }
   }
 );
 
 // Async thunk to fetch 5-day forecast based on city coordinates
 export const fetchFiveDayForecast = createAsyncThunk(
-  'weather/fetchFiveDayForecast',
+  "weather/fetchFiveDayForecast",
   async ({ lat, lon }, thunkAPI) => {
     const state = thunkAPI.getState().weather;
     const unit = state.unit;
@@ -49,31 +49,50 @@ export const fetchFiveDayForecast = createAsyncThunk(
       const response = await axios.get(
         `${API_URL}/forecast?lat=${lat}&lon=${lon}&units=${unit}&appid=${API_KEY}`
       );
+      console.log("five day forecast" , response.data)
       return response.data;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data);
+      return thunkAPI.rejectWithValue(error.response?.data || error.message);
     }
   }
 );
 
-// Initial state for the weather slice
+// Async thunk to fetch 5-day forecast based on city name
+export const fetchCityForecast = createAsyncThunk(
+  "weather/fetchCityForecast",
+  async (cityName, thunkAPI) => {
+    const state = thunkAPI.getState().weather;
+    const unit = state.unit;
+    try {
+      const response = await axios.get(
+        `${API_URL}/forecast?q=${cityName}&units=${unit}&appid=${API_KEY}`
+      );
+      console.log(response.data)
+      return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response?.data || error.message);
+    }
+  }
+);
+
+// Updated initial state
 const initialState = {
   currentLocationWeather: null,
   cityWeather: null,
-  fiveDayForecast: null,
-  unit: 'metric', // 'metric' for Celsius, 'imperial' for Fahrenheit
+  cityFiveDayForecast: null,
+  coordinateFiveDayForecast: null,
+  unit: "metric",
   loading: false,
   error: null,
 };
 
-// Weather slice
+// Updated extraReducers
 const weatherSlice = createSlice({
-  name: 'weather',
+  name: "weather",
   initialState,
   reducers: {
-    // Reducer to toggle temperature unit
     toggleUnit: (state) => {
-      state.unit = state.unit === 'metric' ? 'imperial' : 'metric';
+      state.unit = state.unit === "metric" ? "imperial" : "metric";
     },
   },
   extraReducers: (builder) => {
@@ -89,7 +108,7 @@ const weatherSlice = createSlice({
       })
       .addCase(fetchCurrentLocationWeather.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload;
+        state.error = action.payload || "Failed to fetch data.";
       })
       // Fetch city weather
       .addCase(fetchCityWeather.pending, (state) => {
@@ -102,20 +121,33 @@ const weatherSlice = createSlice({
       })
       .addCase(fetchCityWeather.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload;
+        state.error = action.payload || "Failed to fetch data.";
       })
-      // Fetch 5-day forecast
+      // Fetch 5-day forecast for city coordinates
       .addCase(fetchFiveDayForecast.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
       .addCase(fetchFiveDayForecast.fulfilled, (state, action) => {
         state.loading = false;
-        state.fiveDayForecast = action.payload;
+        state.coordinateFiveDayForecast = action.payload;
       })
       .addCase(fetchFiveDayForecast.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload;
+        state.error = action.payload || "Failed to fetch data.";
+      })
+      // Fetch 5-day forecast for city name
+      .addCase(fetchCityForecast.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchCityForecast.fulfilled, (state, action) => {
+        state.loading = false;
+        state.cityFiveDayForecast = action.payload;
+      })
+      .addCase(fetchCityForecast.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload || "Failed to fetch data.";
       });
   },
 });
@@ -123,3 +155,4 @@ const weatherSlice = createSlice({
 export const { toggleUnit } = weatherSlice.actions;
 
 export default weatherSlice.reducer;
+
