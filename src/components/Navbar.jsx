@@ -39,8 +39,8 @@ const Navbar = ({ onCitySearch }) => {
       ) : (
         <div className="flex items-center">
           <Link to="/search_cities">
-            <button className="bg-blue-500 text-white px-4 py-2 rounded-full hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
-              Search for a City
+            <button className="bg-gray-700 font-semibold text-white px-4 py-2 rounded-full hover:bg-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 border-2 border-blue-500">
+              SEARCH FOR A CITY
             </button>
           </Link>
         </div>

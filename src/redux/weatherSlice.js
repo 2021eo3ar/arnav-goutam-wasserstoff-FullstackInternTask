@@ -49,7 +49,6 @@ export const fetchFiveDayForecast = createAsyncThunk(
       const response = await axios.get(
         `${API_URL}/forecast?lat=${lat}&lon=${lon}&units=${unit}&appid=${API_KEY}`
       );
-      console.log("five day forecast" , response.data)
       return response.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response?.data || error.message);
@@ -67,7 +66,6 @@ export const fetchCityForecast = createAsyncThunk(
       const response = await axios.get(
         `${API_URL}/forecast?q=${cityName}&units=${unit}&appid=${API_KEY}`
       );
-      console.log(response.data)
       return response.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response?.data || error.message);
