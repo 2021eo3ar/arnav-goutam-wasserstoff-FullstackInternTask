@@ -27,7 +27,7 @@ const CurrentDateInsight = ({ searchCity }) => {
         console.error('Geolocation is not supported by this browser.');
       }
     } else if (location.pathname === '/search_cities' && searchCity) {
-      // Fetch city weather based on the searched city
+      // Fetching city weather based on the searched city
       dispatch(fetchCityWeather(searchCity));
     }
   }, [dispatch, location.pathname, searchCity, unit]); // Refetch data when unit, route, or searchCity changes

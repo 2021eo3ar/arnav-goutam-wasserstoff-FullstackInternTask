@@ -17,6 +17,8 @@ const DayForecast = ({ searchCity }) => {
   const location = useLocation(); // Get the current route
   const { currentLocationWeather, cityWeather, loading, error, unit } = useSelector((state) => state.weather);
 
+   
+  // route based api calling based on useLocation()
   useEffect(() => {
     if (location.pathname === '/') {
       // Fetch current location weather when on home page

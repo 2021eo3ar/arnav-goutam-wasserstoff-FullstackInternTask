@@ -73,7 +73,7 @@ export const fetchCityForecast = createAsyncThunk(
   }
 );
 
-// Updated initial state
+//initial state
 const initialState = {
   currentLocationWeather: null,
   cityWeather: null,
@@ -84,7 +84,7 @@ const initialState = {
   error: null,
 };
 
-// Updated extraReducers
+//extraReducers
 const weatherSlice = createSlice({
   name: "weather",
   initialState,

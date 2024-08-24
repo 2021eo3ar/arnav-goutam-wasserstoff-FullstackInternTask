@@ -8,7 +8,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchCityForecast } from '../redux/weatherSlice';
 
 const CityPage = () => {
-  const [cityName, setCityName] = useState(''); // State to store the city name from the search bar
+  // State to store the city name from the search bar
+  const [cityName, setCityName] = useState(''); 
   const dispatch = useDispatch();
   const { error } = useSelector((state) => state.weather);
 

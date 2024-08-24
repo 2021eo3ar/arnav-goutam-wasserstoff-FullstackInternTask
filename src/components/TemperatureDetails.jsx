@@ -9,14 +9,14 @@ const weatherIcons = {
   Clear: <WiDaySunny size={30} />,
   Clouds: <WiCloudy size={30} />,
   Rain: <WiRain size={30} />,
-  // Add more conditions as needed
 };
 
 const TemperatureDetails = ({ searchCity }) => {
   const dispatch = useDispatch();
   const location = useLocation();
   const { cityFiveDayForecast, coordinateFiveDayForecast, cityWeather, loading, error, unit } = useSelector((state) => state.weather);
-
+ 
+  // Route Based Api Fetching
   useEffect(() => {
     if (location.pathname === '/' && navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(

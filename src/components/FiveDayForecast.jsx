@@ -4,7 +4,7 @@ import { useLocation } from 'react-router-dom';
 import { fetchFiveDayForecast, fetchCityForecast } from '../redux/weatherSlice';
 import { FaCloudSun, FaCloudRain, FaSnowflake, FaCloudShowersHeavy } from 'react-icons/fa';
 
-// Function to get the correct weather icon based on the weather code
+// Function to get the correct weather icon based on the weather code From Api
 const getWeatherIcon = (weatherCode) => {
   switch (weatherCode) {
     case '01d':
@@ -33,6 +33,7 @@ const FiveDayForecast = () => {
   const location = useLocation();
   const { cityFiveDayForecast, coordinateFiveDayForecast, loading, error, unit } = useSelector((state) => state.weather);
 
+  // Route based API calling
   useEffect(() => {
     if (location.pathname === '/') {
       if (navigator.geolocation) {
@@ -83,7 +84,7 @@ const FiveDayForecast = () => {
             month: 'short',
           });
 
-          // Calculate average temperature and convert if needed
+          // Calculate average temperature and converting it
           const avgTemp = unit === 'metric'
             ? ((main.temp_max + main.temp_min) / 2).toFixed(1)
             : ((convertToFahrenheit(main.temp_max) + convertToFahrenheit(main.temp_min)) / 2).toFixed(1);

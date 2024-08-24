@@ -14,7 +14,7 @@ const Navbar = ({ onCitySearch }) => {
 
   const handleSearchSubmit = (e) => {
     e.preventDefault();
-    onCitySearch(inputValue); // Pass the search input to the parent
+    onCitySearch(inputValue); // Passing the search input to the parent component
   };
 
   return (
