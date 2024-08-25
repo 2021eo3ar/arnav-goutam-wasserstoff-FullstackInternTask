@@ -3,6 +3,7 @@
 This application is made using React.js and OpenweatherMap Api, Here's the full description below :-
 
 ## Tools Used for this project
+- OpenWeatherMap's API
 - React + Redux
 - Tailwind Css
 - Axios
